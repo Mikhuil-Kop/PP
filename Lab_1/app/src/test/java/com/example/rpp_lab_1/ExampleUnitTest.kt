@@ -1,4 +1,4 @@
-package com.example.lab_1
+package com.example.laba1kotlin
 
 import org.junit.Test
 
