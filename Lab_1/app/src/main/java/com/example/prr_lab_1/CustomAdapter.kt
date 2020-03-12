@@ -18,21 +18,12 @@ class CustomAdapter(val items : ArrayList<Int>, val context: Context) : Recycler
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false))
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (items.get(position) % 2 == 1)
-        {
-            holder?.number?.setBackgroundColor(Color.WHITE)
-        }
-        else
-        {
-            holder?.number?.setBackgroundColor(Color.LTGRAY)
-        }
-        holder?.number?.text = intToString(items.get(position))
+        holder.number?.setBackgroundColor(if(items[position] % 2 == 1) Color.WHITE else Color.LTGRAY)
+        holder.number?.text = intToString(items[position])
     }
 
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
@@ -40,72 +31,39 @@ class CustomAdapter(val items : ArrayList<Int>, val context: Context) : Recycler
         var image = view.item_icon
     }
 
-    fun intToString(number: Int) : String
+    private fun intToString(number: Int) : String
     {
-        var tempString = ""
-        var tempNumber = number
-        var flag = false;
-        val digits : Array<String> = arrayOf("", "один", "два", "три", "четыре","пять", "шесть", "семь", "восемь", "девять")
-        val tens1: Array<String> = arrayOf("десять", "одиннадцать", "двеннадцать", "тринадцать","четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-        val tens2: Array<String> = arrayOf("", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-        val hundreds: Array<String> = arrayOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-        val thousands: Array<String> = arrayOf("", "тысяча", "две тысячи", "три тысячи", "четыре тысячи", "пять тысяч", "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
+        val arr1 = arrayOf<Array<String>>(
+            arrayOf<String>("", "Один", "Два", "Три", "Четыре", "Пять", "Шесть", "Семь", "Восемь", "Девять", "Десять",
+                "Одиннадцать", "Двенадцать", "Тринадцать", "Четырнадцать", "Пятнадцать", "Шеснадцать", "Сменадцать", "Восемнадцать", "Девятнадцать"),
 
-        if (tempNumber/1000000 > 0)
-            return "Один миллион"
-        tempNumber %= 1000000
-        if (tempNumber/100000 > 0)
-        {
-            flag = true;
-            tempString += hundreds[number/100000 % 10] + " "
-        }
-        tempNumber %= 100000
-        if (tempNumber/10000 > 0)
-        {
-            if (tempNumber/10000 == 1)
-            {
-                tempString += tens1[tempNumber/1000 % 10] + " "
-                tempNumber %= 1000
-                flag = true
-            }
-            else
-            {
-                tempString+= tens2[tempNumber/10000] + " "
-                tempNumber %= 10000
-                flag = true
-            }
-        }
-        if (tempNumber/1000 > 0)
-        {
-            tempString += thousands[tempNumber/1000] + " "
-        }
-        else if (flag)
-        {
-            tempString += "тысяч "
-        }
-        tempNumber %= 1000
-        if (tempNumber/100 > 0)
-        {
-            tempString += hundreds[tempNumber/100] + " "
+            arrayOf<String>("", "Одна Тысяча", "Две Тысячи", "Три Тысячи", "Четыре Тысячи", "Пять Тысяч", "Шесть Тысяч", "Семь Тысяч", "Восемь Тысяч", "Девять Тысяч", "Десять Тысяч",
+                "Одиннадцать Тысяч", "Двенадцать Тысяч", "Тринадцать Тысяч", "Четырнадцать Тысяч", "Пятнадцать Тысяч", "Шеснадцать Тысяч", "Сменадцать Тысяч", "Восемнадцать Тысяч", "Девятнадцать Тысяч")
+        )
+        val arr2 = arrayOf<String>("", "", "Двадцать", "Тридцать", "Сорок", "Пятьдесят", "Шестьдесят", "Семьдесят", "Восемьдесят", "Девяносто")
+        val arr3 = arrayOf<String>("","Сто","Двести","Триста","Четыреста","Пятьсот","Шестьсот", "Семьсот", "Восемьсот","Девятьсот")
+
+
+        var str = ""
+        var ind :Int = 0
+        var num :Int = number
+
+        while(num != 0){
+            var i1 : Int = num % 10
+            num = (num / 10)
+            var i2 : Int = num % 10
+            num = (num / 10)
+            var i3 : Int = num % 10
+            num = (num / 10)
+
+            if(i2 == 1)
+                i1 += 10
+
+            str = arr3[i3] + " " + arr2[i2] + " " + arr1[ind][i1] + " " + str
+            ind++
         }
 
-        tempNumber %= 100
-        if (tempNumber/10 > 0)
-        {
-            if (tempNumber/10 == 1)
-            {
-                tempString += tens1[tempNumber%10] + " "
-                return tempString
-            }
-            else
-            {
-                tempString += tens2[tempNumber/10] + " " + digits[tempNumber%10] + " "
-                return tempString
-            }
-        }
-        tempString += digits[tempNumber%10] + " "
-
-        return tempString
+        return str
     }
 
-    }
+}
