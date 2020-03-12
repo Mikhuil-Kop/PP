@@ -3,6 +3,7 @@ package com.example.laba1kotlin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,17 +11,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val secondActivity = Intent (this, SecondActivity::class.java)
-        val handler = android.os.Handler()
-
-        handler.postDelayed({ /*code*/ }, 2000) //specify the number of milliseconds
-        android.os.Handler().postDelayed({
-            startActivity(secondActivity)
-        }, 2000)
+        Handler().postDelayed(MyRunnable(this), 2000)
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        finish()
+    private class MyRunnable(mainActivity : MainActivity) : Runnable{
+        val mainActivity = mainActivity
+
+        override fun run() {
+            Thread.sleep(0)
+            val intent = Intent(mainActivity, SecondActivity::class.java)
+            mainActivity.startActivity(intent)
+            mainActivity.finish()
+        }
     }
 }
+
+
