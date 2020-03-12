@@ -20,7 +20,7 @@ class SecondActivity : AppCompatActivity() {
 
 
         var myList = ArrayList<Int>()
-        for (i in 0..1000000)
+        for (i in 1..999999)
             myList.add(i)
 
         recycleView.adapter = CustomAdapter(myList, this)
