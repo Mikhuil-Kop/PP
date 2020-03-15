@@ -14,4 +14,9 @@ class SplashScreen : AppCompatActivity() {
         startActivity(mainActivity)
 
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
+    }
 }

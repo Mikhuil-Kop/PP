@@ -20,33 +20,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val url = "https://raw.githubusercontent.com/wesleywerner/ancient-tech/02decf875616dd9692b31658d92e64a20d99f816/src/data/techs.ruleset.json"
+        val url =
+            "https://raw.githubusercontent.com/wesleywerner/ancient-tech/02decf875616dd9692b31658d92e64a20d99f816/src/data/techs.ruleset.json"
         AsyncTaskHandleJson().execute(url)
 
         technologies_list.setOnItemClickListener(object : OnItemClickListener {
-           override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                 val i = Intent(view!!.context, ViewPager::class.java)
-                 var prevPosition = position - 1
-                 var nextPosition = position + 1
+            override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                val i = Intent(view!!.context, ViewPager::class.java)
+                var prevPosition = position - 1
+                var nextPosition = position + 1
 
-                 if(position == 0) prevPosition = list.lastIndex
-                 if(position == list.lastIndex) nextPosition = 0
+                if (position == 0) prevPosition = list.lastIndex
+                if (position == list.lastIndex) nextPosition = 0
 
-                 i.putExtra("previousImage", list[prevPosition].graphic)
-                 i.putExtra("currentImage", list[position].graphic)
-                 i.putExtra("nextImage", list[nextPosition].graphic)
+                i.putExtra("previousImage", list[prevPosition].graphic)
+                i.putExtra("currentImage", list[position].graphic)
+                i.putExtra("nextImage", list[nextPosition].graphic)
 
-                 startActivity(i)
+                startActivity(i)
             }
+        })
+    }
+
 
     inner class AsyncTaskHandleJson : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg url: String?): String {
             var text: String
             val connection = URL(url[0]).openConnection() as HttpURLConnection
-            try{
+            try {
                 connection.connect()
-                text = connection.inputStream.use { it.reader().use{reader -> reader.readText()} }
-            }finally {
+                text = connection.inputStream.use {
+                    it.reader().use { reader -> reader.readText() }
+                }
+            } finally {
                 connection.disconnect()
             }
 
@@ -59,16 +65,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    public fun handleJson(jsonString: String?) {
-
+    fun handleJson(jsonString: String?) {
         val jsonArray = JSONArray(jsonString)
 
         var x = 1
-        while(x < jsonArray.length())
-        {
+        while (x < jsonArray.length()) {
             val jsonObject = jsonArray.getJSONObject(x)
             var helptext = ""
-            if(jsonObject.has("helptext")) helptext = jsonObject.getString("helptext")
+            if (jsonObject.has("helptext")) helptext = jsonObject.getString("helptext")
 
             list.add(
                 Technology(
@@ -78,12 +82,9 @@ class MainActivity : AppCompatActivity() {
                 )
             )
             x++
-
         }
         val adapter = ListAdapter(this, list)
         technologies_list.adapter = adapter
-    }
-}
     }
 }
 
