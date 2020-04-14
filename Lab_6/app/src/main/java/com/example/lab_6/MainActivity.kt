@@ -1,7 +1,6 @@
 package com.example.lab_6
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -19,8 +18,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //Находим на активити
-        ourPager = findViewById(R.id.pager)
+        //Находим на пролистыватель и подключаем адаптер
+        ourPager = findViewById(R.id.main_pager)
         ourAdapter = MyFragmentPagerAdapter(supportFragmentManager)
         ourPager!!.adapter = ourAdapter
         //Засовываем в "пролистыватель" пустой listener. Можно удалить данный фрагмент
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     //Адаптер, который создает экземпляр PageFragment, когда это необходимо
     private class MyFragmentPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
         override fun getItem(position: Int): Fragment {
-            return newInstance(position)
+            return mainNewInstance(position)
         }
 
         override fun getCount(): Int {

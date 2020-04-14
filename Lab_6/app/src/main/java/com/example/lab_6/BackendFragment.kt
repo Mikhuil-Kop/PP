@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import java.util.*
 
+
 //Класс, отвечающий за содержание ViewPager(товаровы в активити пользователя)
-class PageFragment() : Fragment() {
+class BackendFragment() : Fragment() {
     var pageNumber = 0
     var backColor = 0
 
@@ -20,7 +22,7 @@ class PageFragment() : Fragment() {
         //Достаем переменную, засунутую в Bundle в функции newInstance
         pageNumber = arguments!!.getInt("arg_page_number")
         val rnd = Random()
-        backColor = Color.argb(40, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+        backColor = Color.argb(40, rnd.nextInt(10), rnd.nextInt(10), rnd.nextInt(10))
     }
 
     //Данная функция выполняется каждый раз, когда пользователь проли
@@ -29,10 +31,10 @@ class PageFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //Создаём view, который покажет ViewPager в mainActivity и заполняем его
-        val view: View = inflater.inflate(R.layout.fragment, null)
-        val tvPage = view.findViewById(R.id.main_fragment_name) as TextView
+        val view = inflater.inflate(R.layout.backend_fragment, null)
+        val tvPage = view.findViewById(R.id.be_fragment_name) as EditText
 
-        tvPage.text = "Page$pageNumber"
+        tvPage.setText("Page$pageNumber")
         tvPage.setBackgroundColor(backColor)
         return view
     }
@@ -40,9 +42,9 @@ class PageFragment() : Fragment() {
 }
 
 //СТАТИКИ НЕТ, БЛИН
-fun mainNewInstance(page: Int): PageFragment {
+fun backendNewInstance(page: Int): BackendFragment {
     //Создаем экземпляр PageFragment и запихиваем внутрь него Bundle с хранимым интом
-    val pageFragment = PageFragment()
+    val pageFragment = BackendFragment()
     val arguments = Bundle()
     arguments.putInt("arg_page_number", page)
     pageFragment.arguments = arguments
