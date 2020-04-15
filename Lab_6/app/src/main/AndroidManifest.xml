@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".BackendActivity" android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".StartActivity">
+        <activity android:name=".activities.BackendActivity" android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

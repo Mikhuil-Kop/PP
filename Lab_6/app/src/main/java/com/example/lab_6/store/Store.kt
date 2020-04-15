@@ -1,11 +1,11 @@
-package com.example.lab_6
+package com.example.lab_6.store
 
 //Класс-список товаров в магазине
 class Store {
     //Основной массив
-    private var products = mutableListOf<ProductCount>();
+    var products = mutableListOf<ProductCount>();
     //Массив доступных товаров на основе основного массива
-    private var enabledProducts = mutableListOf<ProductCount>();
+    var enabledProducts = mutableListOf<ProductCount>();
 
     //Размеры
     fun getFullSize():Int{
@@ -16,7 +16,7 @@ class Store {
         return enabledProducts.size;
     }
 
-    fun addProduct(index : Int) : ProductCount{
+    fun addProduct(index : Int) : ProductCount {
         val productCount = ProductCount(Product(), 0)
         products.add(index, productCount)
         return productCount
@@ -26,7 +26,7 @@ class Store {
          products.removeAt(index)
     }
 
-    fun getProduct(index: Int):ProductCount{
+    fun getProduct(index: Int): ProductCount {
         return products[index]
     }
 }

@@ -1,13 +1,14 @@
-package com.example.lab_6
+package com.example.lab_6.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.lab_6.R
+import com.example.lab_6.store.ProductCount
+import com.example.lab_6.store.STORE
 import java.util.*
 
 //Класс, отвечающий за содержание ViewPager(товаровы в активити пользователя)

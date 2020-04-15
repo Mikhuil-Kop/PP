@@ -1,9 +1,10 @@
-package com.example.lab_6
+package com.example.lab_6.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.lab_6.R
 
 
 class StartActivity : AppCompatActivity() {

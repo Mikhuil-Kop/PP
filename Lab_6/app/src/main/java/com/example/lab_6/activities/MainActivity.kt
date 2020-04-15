@@ -1,4 +1,4 @@
-package com.example.lab_6
+package com.example.lab_6.activities
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.example.lab_6.fragments.BackendFragment
+import com.example.lab_6.fragments.PageFragment
+import com.example.lab_6.R
+import com.example.lab_6.store.STORE
 
 //Класс, отвечающий за активити пользователя
 class MainActivity : AppCompatActivity() {
@@ -21,7 +24,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         //Находим на пролистыватель и подключаем адаптер
         ourPager = findViewById(R.id.main_pager)
-        ourAdapter = MyFragmentPagerAdapter(supportFragmentManager)
+        ourAdapter =
+            MyFragmentPagerAdapter(
+                supportFragmentManager
+            )
         ourPager!!.adapter = ourAdapter
         //Засовываем в "пролистыватель" пустой listener. Можно удалить данный фрагмент
         ourPager!!.addOnPageChangeListener(
