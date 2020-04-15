@@ -7,7 +7,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.lab_6.store.ProductCount
 
 //Адаптер, на основе которого написаны адаптеры мейна и бекенда
-class ProductAdapter(fm: FragmentManager?, private val pager:ViewPager, private val products: MutableList<ProductCount>, private val construct : (ProductCount, ProductAdapter)-> ProductFragment) : FragmentPagerAdapter(fm!!, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class ProductAdapter(fm: FragmentManager?, val pager:ViewPager, private val products: MutableList<ProductCount>, private val construct : (ProductCount, ProductAdapter)-> ProductFragment) : FragmentPagerAdapter(fm!!, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     var all = mutableListOf<ProductFragment>();
     init{
         pager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

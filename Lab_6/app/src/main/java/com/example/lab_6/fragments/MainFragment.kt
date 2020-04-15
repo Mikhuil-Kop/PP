@@ -31,7 +31,7 @@ class MainFragment(product: ProductCount, adapter: ProductAdapter) : ProductFrag
         refresh()
 
         buyButton?.setOnClickListener {
-            product.tryBuy(BuyAccept(adapter))
+            product.tryBuy(BuyAccept(adapter, product))
             refresh()
         }
 
