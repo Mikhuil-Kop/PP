@@ -47,7 +47,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:background="@android:color/background_light"
-        app:layout_constraintBottom_toTopOf="@+id/main_fragment_by"
+        app:layout_constraintBottom_toTopOf="@+id/main_fragment_buy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_fragment_count">
@@ -61,7 +61,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/main_fragment_by"
+        android:id="@+id/main_fragment_buy"
         android:layout_width="135dp"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"

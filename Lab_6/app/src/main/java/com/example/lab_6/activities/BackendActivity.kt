@@ -14,7 +14,7 @@ import com.example.lab_6.store.*
 class BackendActivity : AppCompatActivity() {
     //штука, которая обеспечивает "пролистывание"
     var ourPager: ViewPager? = null
-    var ourAdapter: ProductAdapter<BackendFragment>? = null
+    var ourAdapter: ProductAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("D", "Бэкенд запущен");
@@ -22,21 +22,26 @@ class BackendActivity : AppCompatActivity() {
         setContentView(R.layout.activity_backend)
         //Находим на пролистыватель и подключаем адаптер
         ourPager = findViewById(R.id.backend_pager)
-        ourAdapter = ProductAdapter(supportFragmentManager, ourPager!!, STORE.products) {productCount: ProductCount ->  BackendFragment(productCount)}
+        ourAdapter = ProductAdapter(supportFragmentManager, ourPager!!, STORE.products)
+        {productCount: ProductCount, adapter: ProductAdapter ->  BackendFragment(productCount, adapter)}
         ourPager!!.adapter = ourAdapter
     }
 
     //Основные отличия. Кнопки
     //Добавление нового элемента в массив
     fun addToStoreButton(view: View?): Unit {
-        STORE.addProduct(0)
+        ourPager!!.isActivated = true
+        STORE.addProduct(ourPager!!.currentItem)
         ourAdapter!!.refresh()
     }
 
     //Удаление текущего элемента
     fun removeFromStoreButton(view: View?): Unit {
-        STORE.removeProduct(0)
-        ourAdapter!!.refresh()
+        if (STORE.products.size != 0) {
+            STORE.removeProduct(ourPager!!.currentItem)
+            ourAdapter!!.refresh()
+        } else
+            ourPager!!.isActivated = false
     }
 
 }

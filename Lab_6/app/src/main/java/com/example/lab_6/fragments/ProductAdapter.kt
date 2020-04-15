@@ -5,16 +5,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.lab_6.store.ProductCount
-import com.example.lab_6.store.STORE
 
 //Адаптер, на основе которого написаны адаптеры мейна и бекенда
-class ProductAdapter<T : ProductFragment>(fm: FragmentManager?, private val pager:ViewPager, private val products: MutableList<ProductCount>, private val construct : (ProductCount)-> T) : FragmentPagerAdapter(fm!!, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    var all = mutableListOf<T>();
+class ProductAdapter(fm: FragmentManager?, private val pager:ViewPager, private val products: MutableList<ProductCount>, private val construct : (ProductCount, ProductAdapter)-> ProductFragment) : FragmentPagerAdapter(fm!!, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    var all = mutableListOf<ProductFragment>();
     init{
         pager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
                 //Обновление необновленной записи при попадании на неё
-                if(all[position].mustBeRefreshed){
+                if(position >= 0 && position < all.size && all[position].mustBeRefreshed){
                     all[position].refresh()
                     all[position].mustBeRefreshed = false
                 }
@@ -26,6 +25,10 @@ class ProductAdapter<T : ProductFragment>(fm: FragmentManager?, private val page
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
+                if(position >= 0 && position < all.size && all[position].mustBeRefreshed){
+                    all[position].refresh()
+                    all[position].mustBeRefreshed = false
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -42,19 +45,22 @@ class ProductAdapter<T : ProductFragment>(fm: FragmentManager?, private val page
     }
 
     //Функция востанавливает правильный размер и обнавляет весь ViewPager
-    fun refresh(){
+    fun refresh(mainThread : Boolean = true){
         //Смена размера
         if(all.size < products.size){
             for(i in all.size until products.size)
-                all.add(construct(products[i]))
+                all.add(construct(products[i], this))
             notifyDataSetChanged()
-            pager.currentItem = 0;
+            //pager.currentItem = 0;
         }
         if(all.size > products.size){
-            while (all.size != products.size)
+            while (all.size != products.size) {
+                if(mainThread)
+                all[all.size - 1].clear()
                 all.removeAt(all.size - 1)
+            }
             notifyDataSetChanged()
-            pager.currentItem = 0;
+            //pager.currentItem = 0;
         }
 
 
@@ -64,29 +70,13 @@ class ProductAdapter<T : ProductFragment>(fm: FragmentManager?, private val page
             all[i].mustBeRefreshed = true
         }
 
-        if(all.size != 0) {
+        if(mainThread && all.size != 0) {
+            if(pager.currentItem >= all.size)
+                pager.currentItem--
             all[pager.currentItem].refresh()
             all[pager.currentItem].mustBeRefreshed = false;
         }
 
     }
 
-    private fun add(index: Int){
-        var newPos = 0
-
-        if (STORE.getFullSize() == 0)
-            STORE.addProduct(0)
-        else {
-            newPos = index + 1
-            STORE.addProduct(newPos)
-        }
-        refresh()
-        pager.currentItem = newPos
-    }
-
-    private fun remove(index: Int){
-        STORE.removeProduct(pager.currentItem)
-        refresh()
-        pager.currentItem = pager.currentItem - 1
-    }
 }
