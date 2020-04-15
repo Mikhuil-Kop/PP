@@ -1,6 +1,7 @@
 package com.example.lab_6
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         ourPager!!.adapter = ourAdapter
         //Засовываем в "пролистыватель" пустой listener. Можно удалить данный фрагмент
         ourPager!!.addOnPageChangeListener(
-            object : OnPageChangeListener {
+            object : ViewPager.OnPageChangeListener {
                 override fun onPageSelected(position: Int) {
                 }
 
@@ -40,14 +41,41 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
+    //Основные отличия. Кнопки
+    //Добавление нового элемента в массив
+    fun addToStoreButton(view: View?): Unit {
+        STORE.addProduct(ourPager!!.currentItem)
+        ourAdapter!!.notifyDataSetChanged()
+    }
+
+    //Удаление текущего элемента
+    fun removeFromStoreButton(view: View?): Unit {
+        STORE.removeProduct(ourPager!!.currentItem)
+        ourAdapter!!.notifyDataSetChanged()
+        ourPager!!.currentItem = ourPager!!.currentItem - 1
+    }
+
     //Адаптер, который создает экземпляр PageFragment, когда это необходимо
     private class MyFragmentPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
+        var all = mutableListOf<BackendFragment>();
+
         override fun getItem(position: Int): Fragment {
-            return mainNewInstance(position)
+            val pageFragment = PageFragment()
+            val arguments = Bundle()
+            arguments.putInt("arg_page_number", position)
+            pageFragment.arguments = arguments
+            return pageFragment
         }
 
         override fun getCount(): Int {
-            return 50;
+            return STORE.getFullSize();
         }
+
+        //Функция перезагрузки всех элементов
+        fun refresh(){
+            for (i in 0..all.size)
+                all[i].refresh()
+        }
+
     }
 }

@@ -7,7 +7,7 @@
     android:background="@android:color/background_light">
 
     <TextView
-        android:id="@+id/be_fragment_count2"
+        android:id="@+id/be_fragment_count"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -49,7 +49,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/be_fragment_count2">
+        app:layout_constraintTop_toBottomOf="@+id/be_fragment_count">
 
         <EditText
             android:id="@+id/be_fragment_settings"
@@ -60,5 +60,27 @@
             android:singleLine="false"
             android:text="asdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdas" />
     </ScrollView>
+
+    <Button
+        android:id="@+id/be_fragment_del"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
+        android:background="@color/colorPrimary"
+        android:text="-"
+        app:layout_constraintEnd_toStartOf="@+id/be_fragment_count"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/be_fragment_name" />
+
+    <Button
+        android:id="@+id/be_fragment_add"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
+        android:background="@color/colorPrimary"
+        android:text="+"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/be_fragment_count"
+        app:layout_constraintTop_toBottomOf="@+id/be_fragment_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

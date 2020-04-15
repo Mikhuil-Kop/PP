@@ -1,6 +1,8 @@
 package com.example.lab_6
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -12,9 +14,10 @@ import androidx.viewpager.widget.ViewPager
 class BackendActivity : AppCompatActivity() {
     //штука, которая обеспечивает "пролистывание"
     var ourPager: ViewPager? = null
-    var ourAdapter: PagerAdapter? = null
+    var ourAdapter: MyFragmentPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("D", "Бэкенд запущен");
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_backend)
         //Находим на пролистыватель и подключаем адаптер
@@ -39,14 +42,57 @@ class BackendActivity : AppCompatActivity() {
             })
     }
 
+    //Основные отличия. Кнопки
+    //Добавление нового элемента в массив
+    fun addToStoreButton(view: View?): Unit {
+        var newPos = 0
+
+        if(STORE.getFullSize() == 0)
+            STORE.addProduct(0)
+        else {
+            newPos = ourPager!!.currentItem + 1
+            STORE.addProduct(newPos)
+        }
+        ourAdapter!!.refresh()
+        ourPager!!.currentItem = newPos
+    }
+
+    //Удаление текущего элемента
+    fun removeFromStoreButton(view: View?): Unit {
+        STORE.removeProduct(ourPager!!.currentItem)
+        ourAdapter!!.notifyDataSetChanged()
+        ourPager!!.currentItem = ourPager!!.currentItem - 1
+
+        ourAdapter!!.refresh()
+    }
+
     //Адаптер, который создает экземпляр PageFragment, когда это необходимо
-    private class MyFragmentPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
+    class MyFragmentPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
+        var all = mutableListOf<BackendFragment>();
+
         override fun getItem(position: Int): Fragment {
-            return backendNewInstance(position)
+            //Создаем экземпляр PageFragment и запихиваем внутрь него Bundle с хранимым интом
+            val pageFragment = BackendFragment()
+            val arguments = Bundle()
+
+            all.add(pageFragment)
+            arguments.putInt("arg_page_number", position)
+            pageFragment.arguments = arguments
+
+            return pageFragment
         }
 
         override fun getCount(): Int {
-            return 50;
+            val size = STORE.getFullSize();
+            return size
+        }
+
+
+        fun refresh(){
+            notifyDataSetChanged()
+
+            for (i in 0 until all.size)
+                all[i].refresh()
         }
     }
 }

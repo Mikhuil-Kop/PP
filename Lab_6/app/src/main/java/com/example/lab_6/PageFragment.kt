@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import java.util.*
 
 //Класс, отвечающий за содержание ViewPager(товаровы в активити пользователя)
 class PageFragment() : Fragment() {
-    var pageNumber = 0
-    var backColor = 0
+    var pageNumber: Int = 0
+    var product: ProductCount? = null
+    var nameText: TextView? = null
+    var countText: TextView? = null
+    var settingsText: TextView? = null
 
     //Данная функция выполняется единожды для каждого элемента ViewPager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +24,6 @@ class PageFragment() : Fragment() {
         //Достаем переменную, засунутую в Bundle в функции newInstance
         pageNumber = arguments!!.getInt("arg_page_number")
         val rnd = Random()
-        backColor = Color.argb(40, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }
 
     //Данная функция выполняется каждый раз, когда пользователь проли
@@ -30,21 +33,22 @@ class PageFragment() : Fragment() {
     ): View? {
         //Создаём view, который покажет ViewPager в mainActivity и заполняем его
         val view: View = inflater.inflate(R.layout.fragment, null)
-        val tvPage = view.findViewById(R.id.main_fragment_name) as TextView
+        product = STORE.getProduct(pageNumber)
 
-        tvPage.text = "Page$pageNumber"
-        tvPage.setBackgroundColor(backColor)
+        nameText = view.findViewById(R.id.main_fragment_name) as TextView
+        countText = view.findViewById(R.id.main_fragment_count) as TextView
+        settingsText = view.findViewById(R.id.main_fragment_settings) as TextView
+
+        refresh()
+
         return view
     }
 
-}
+    fun refresh() {
+        product = STORE.getProduct(pageNumber)
+        nameText!!.text = product!!.product.name
+        countText!!.text = product!!.getCount().toString()
+        settingsText!!.text = product!!.product.settings
+    }
 
-//СТАТИКИ НЕТ, БЛИН
-fun mainNewInstance(page: Int): PageFragment {
-    //Создаем экземпляр PageFragment и запихиваем внутрь него Bundle с хранимым интом
-    val pageFragment = PageFragment()
-    val arguments = Bundle()
-    arguments.putInt("arg_page_number", page)
-    pageFragment.arguments = arguments
-    return pageFragment
 }
